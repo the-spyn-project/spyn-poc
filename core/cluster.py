@@ -3,6 +3,7 @@
 # Created on April 22, 2018
 ####################################################################################################
 
+
 # GLOBAL IMPORTS
 # ==================================================================================================
 
@@ -36,40 +37,35 @@ class Cluster:
 
         self.cluster = tf.train.ClusterSpec(self.resource_dict)
 
-    def start_server(self,job_assignment,task_assignment):
+    def start_server(self,job_name,task_index):
 
-        self.job_assgnment = job_assignment
-        self.task_assignment = task_assignment
-        logger.debug("job assignment: {}".format(self.job_assgnment))
-        logger.debug("task assignment: {}".format(self.task_assignment))
+        self.job_name = job_name
+        self.task_index = task_index
+        logger.debug("job assignment: {}".format(self.job_name))
+        logger.debug("task assignment: {}".format(self.task_index))
 
         self.server = tf.train.Server(self.cluster,
-                                      job_name = self.job_assgnment,
-                                      tas_index = self.task_assignment,
+                                      job_name = self.job_name,
+                                      tas_index = self.task_index,
                                       start=True)
 
-    def join_server(self):
+    def join_server(self,job_assignment):
 
-        if self.task_assignment == "ps":
+        self.job_assignment = job_assignment
+
+        if self.job_assignment == "ps":
 
             self.server.join()
 
-        elif self.task_assignment == "worker":
+        elif self.job_assignment == "worker":
 
-            device_config = "/job:worker/task:{}".format(self.task_assignment)
+            device_config = "/job:worker/task:{}".format(self.job_assignment)
             logger.debug("device_config: {}".format(device_config))
 
             self.device , self.target = (tf.train.replica_device_setter(
                                         worker_device = device_config,
                                         cluster = self.cluster),
                                         self.server)
-
-    def run_worker(self,device,sypn_template):
-
-        with tf.device(device):
-
-            sypn_template.run()
-
 
 
 # TEST CODE
