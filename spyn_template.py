@@ -9,7 +9,6 @@
 
 import os
 import sys
-from logger import *
 import tensorflow as tf
 
 
@@ -53,12 +52,15 @@ if __name__ == '__main__':
 
     cluster.create_cluster()
 
-    cluster.start_server("",-1)
+    # WORKER CODE
+    cluster.start_server("worker",0)
 
     cluster.join_server('worker')
 
-    with tf.device(cluster.device):
+    main_v2.run_worker(cluster.device,cluster.target)
 
-        main_v2.run_worker()
-
+    # PS Code
+    # cluster.start_server("ps",0)
+    #
+    # cluster.join_server("ps")
 

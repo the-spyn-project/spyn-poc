@@ -7,8 +7,13 @@
 # GLOBAL IMPORTS
 # ==================================================================================================
 
-from logger import *
 import tensorflow as tf
+
+
+# GLOBAL IMPORTS
+# ==================================================================================================
+
+from logger import *
 
 
 # MAIN CLASS
@@ -46,7 +51,7 @@ class Cluster:
 
         self.server = tf.train.Server(self.cluster,
                                       job_name = self.job_name,
-                                      tas_index = self.task_index,
+                                      task_index = self.task_index,
                                       start=True)
 
     def join_server(self,job_assignment):
@@ -59,13 +64,13 @@ class Cluster:
 
         elif self.job_assignment == "worker":
 
-            device_config = "/job:worker/task:{}".format(self.job_assignment)
+            device_config = "/job:worker/task:{}".format(self.task_index)
             logger.debug("device_config: {}".format(device_config))
 
             self.device , self.target = (tf.train.replica_device_setter(
                                         worker_device = device_config,
                                         cluster = self.cluster),
-                                        self.server)
+                                        self.server.target)
 
 
 # TEST CODE
@@ -94,3 +99,4 @@ if __name__ == '__main__':
     cluster = Cluster(jobs,tasks,ip_addresses,ports)
 
     cluster.create_cluster()
+
