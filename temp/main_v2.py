@@ -136,8 +136,10 @@ def run_train_epochs(target1, cfg, espcn):
     print("tgt1: {}".format(target1))
     print("cgf: {}".format(cfg))
     print("tsk indx T/F: {}".format(FLAGS.task_index == 0))
+    checkpoint_path = os.path.join(os.getcwd(), r'\checkpoint')
+    print("Checkpoint path: {}".format(checkpoint_path))
 
-    with tf.train.MonitoredTrainingSession(checkpoint_dir=r'C:\Users\checkpoint',
+    with tf.train.MonitoredTrainingSession(checkpoint_dir=checkpoint_path,
                                            hooks=hooks,
                                            master=target1,
                                            config=cfg,
