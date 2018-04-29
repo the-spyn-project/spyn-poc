@@ -63,11 +63,18 @@ class Server:
                                       task_index=self.task_index,
                                       start=True)
 
-    def join_server(self):
+    def join_server(self, ps_strategy=None):
         """
             Joins server to cluster.
             Device and server target are created in this process if job_name="worker"
+
+            :param ps_strategy: variable distribution strategy for ps servers (default: None = round-robin strategy)
         """
+
+        # Assigns ps strategy to class
+        self.ps_strategy = ps_strategy
+        logger.debug("PS Strategy: {}".format(self.ps_strategy))
+
         if self.job_name == "ps":
 
             self.server.join()
@@ -79,7 +86,7 @@ class Server:
 
             self.device , self.target = (tf.train.replica_device_setter(
                                         worker_device=device_config,
-                                        cluster=self.cluster),
+                                        cluster=self.cluster, ps_strategy=self.ps_strategy),
                                         self.server.target)
 
 
@@ -105,7 +112,7 @@ class ServerBuilder:
         if setup_server:
             server.create_cluster()
             server.start_server(self.job_name, self.task_index)
-            server.join_server()
+            server.join_server(ps_strategy=self.ps_strategy)
         return server
 
 
@@ -156,6 +163,15 @@ class ServerBuilder:
         """
 
         self.task_index = task_index
+
+    def set_ps_strategy(self, ps_strategy):
+        """
+
+        :param ps_strategy: variable distribution strategy for ps servers (default: None = round-robin strategy)
+        :return:
+        """
+
+        self.ps_strategy = ps_strategy
 
 
 # TEST CODE

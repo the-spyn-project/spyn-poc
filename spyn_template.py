@@ -17,8 +17,10 @@ import tensorflow as tf
 
 cwd = os.getcwd()
 core_path = cwd + r'\core'
+temp_path = cwd + r'\temp'
 sys.path.append(core_path)
-sys.path.append(r'C:\Users\OM\Desktop\DNN\VESPCN Cloud Ver')
+sys.path.append(temp_path)
+sys.path.append(r'C:\Users\HP_OWNER\Desktop\VESPCN Cloud Ver')
 
 from cluster import *
 from logger import *
@@ -50,6 +52,7 @@ if __name__ == '__main__':
     svrBuilder.set_port_lists(ports)
     svrBuilder.set_server_job_name('ps')
     svrBuilder.set_task_index(0)
+    svrBuilder.set_ps_strategy(tf.contrib.training.GreedyLoadBalancingStrategy)
     Server1 = svrBuilder.get_server()
 
     if Server1.job_name == "worker":
