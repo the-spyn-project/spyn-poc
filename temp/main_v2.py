@@ -155,7 +155,7 @@ def run_ps(server):      # =====================================================
     server.join()
 
 
-def run_worker(device,target):
+def run_worker(device, target):
 
     # Checks if train mode is 3 and training is on
     if FLAGS.train_mode == 3 and FLAGS.is_train:

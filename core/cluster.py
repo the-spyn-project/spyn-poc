@@ -116,6 +116,7 @@ class ServerBuilder:
         :param job_list: list of jobs in cluster
         :return:
         """
+
         self.job_list = job_list
 
     def set_ip_addresses_lists(self, ip_address_lists):
@@ -124,6 +125,7 @@ class ServerBuilder:
         :param ip_address_lists: list of list of ip addresses for each job in cluster
         :return:
         """
+
         self.ip_address_lists = ip_address_lists
 
     def set_port_lists(self, port_lists):
