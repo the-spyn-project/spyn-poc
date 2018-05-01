@@ -16,11 +16,15 @@ import tensorflow as tf
 # ==================================================================================================
 
 cwd = os.getcwd()
-core_path = cwd + r'\core'
-temp_path = cwd + r'\temp'
+core_path = cwd + '/core'
+temp_path = cwd + '/temp'
+
+print(core_path)
+print(temp_path)
+
 sys.path.append(core_path)
 sys.path.append(temp_path)
-sys.path.append(r'C:\Users\HP_OWNER\Desktop\VESPCN Cloud Ver')
+
 
 from cluster import *
 from logger import *

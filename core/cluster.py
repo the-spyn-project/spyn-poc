@@ -101,7 +101,7 @@ class ServerBuilder:
     def get_server(self, setup_server=True):
         """
         Returns a Server object given information set.
-        Job name and task index are not needed if setupServer = False
+        Job name and task index, and ps_strategy are not needed if setupServer = False
 
         :return: Server object
         """
@@ -114,8 +114,6 @@ class ServerBuilder:
             server.start_server(self.job_name, self.task_index)
             server.join_server(ps_strategy=self.ps_strategy)
         return server
-
-
 
     def set_job_list(self, job_list):
         """

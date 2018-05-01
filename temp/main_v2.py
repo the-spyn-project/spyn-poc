@@ -7,7 +7,7 @@ import glob
 import cv2
 import datetime
 import scipy as sp
-from model import ESPCN
+from model_v2 import ESPCN
 from utils import (
     input_setup,
     checkpoint_dir,

@@ -19,7 +19,6 @@ from utils import (
     preprocess,
     modcrop
 )
-from PSNR import psnr
 
 class ESPCN(object):
     
