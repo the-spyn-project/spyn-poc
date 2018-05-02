@@ -61,9 +61,3 @@ if __name__ == '__main__':
 
     if Server1.job_name == "worker":
         main_v2.run_worker(Server1.device, Server1.target)
-
-    # PS Code
-    # cluster.start_server("ps",0)
-    #
-    # cluster.join_server("ps")
-

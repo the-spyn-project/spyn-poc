@@ -98,6 +98,24 @@ class ServerBuilder:
        get_server.
     """
 
+    def __init__(self):
+
+        """
+        This method serves as the constructor for ServerBuilder class.
+        Default values are given to each variable in ServerBuilder class.
+        """
+
+        # Sets ps parameter distribution strategy to round-robin strategy
+        # by default
+        self.ps_strategy = None
+
+        # Sets default values for each variable
+        self.job_list = list()
+        self.ip_address_lists = list()
+        self.job_name = ""
+        self.port_lists = list()
+        self.task_index = 0
+
     def get_server(self, setup_server=True):
         """
         Returns a Server object given information set.
