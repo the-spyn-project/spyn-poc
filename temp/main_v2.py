@@ -97,8 +97,8 @@ def prepare_data(config):
         input_new = []
         for i in range(len(input_)):
             input_new.append(sp.misc.imresize(input_[i],
-                                              (self.image_size * self.scale,
-                                               self.image_size * self.scale), interp='bicubic'))
+                                              (config.image_size * config.scale,
+                                               config.image_size * config.scale), interp='bicubic'))
         input_ = np.array(input_new)
 
         input_ = tf.cast(input_, tf.float32)
@@ -119,7 +119,7 @@ def prepare_data(config):
         return x1, y
 
 
-def run_train_epochs(target1, cfg, espcn):
+def run_train_epochs(target1, cfg, espcn, server):
 
     hooks = [tf.train.StopAtStepHook(last_step=FLAGS.steps_per_epoch)]
 
@@ -148,6 +148,8 @@ def run_train_epochs(target1, cfg, espcn):
         while not sess.should_stop():
             espcn.train(FLAGS, sess)
 
+        if server.use_done_queues:
+            server.signal_done(sess)
 
 
 def run_ps(server):      # ===================================================================================== -> Checking if the flags are valid
@@ -155,7 +157,7 @@ def run_ps(server):      # =====================================================
     server.join()
 
 
-def run_worker(device, target):
+def run_worker(server):
 
     # Checks if train mode is 3 and training is on
     if FLAGS.train_mode == 3 and FLAGS.is_train:
@@ -168,13 +170,12 @@ def run_worker(device, target):
         print('Error: Multi-Dir testing mode for Mode 1 does not require training')
         exit(1)
 
-    with tf.device(device):
+    with tf.device(server.device):
 
-        print(device)
+        print(server.device)
         print(FLAGS.train_mode)
 
         # Prepares data based on is_train and train_mode
-
         DataList = []
 
         if FLAGS.train_mode == 2:
@@ -192,9 +193,12 @@ def run_worker(device, target):
             c_dim=FLAGS.c_dim,
             batch_size=FLAGS.batch_size,
             load_existing_data=FLAGS.load_existing_data,
-            device=device,
+            device=server.device,
             learn_rate=FLAGS.learning_rate,
             data_list=DataList)
+
+        if server.use_done_queues:
+            server.prepare_signal_ops()
 
         # 通过设置log_device_placement选项来记录operations 和 Tensor 被指派到哪个设备上运行
         config = tf.ConfigProto( # ================================================================================ -> Setting a configuration for the device
@@ -203,4 +207,4 @@ def run_worker(device, target):
             device_filters=["/job:ps", "/job:worker/task:%d" % FLAGS.task_index]
         )
 
-        run_train_epochs(target, config, espcn)
+        run_train_epochs(server.target, config, espcn, server)

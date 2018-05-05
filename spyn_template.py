@@ -61,8 +61,7 @@ if __name__ == '__main__':
     Server1 = svrBuilder.get_server()
 
     if Server1.job_name == "worker":
-
-        main_v2.run_worker(Server1.device, Server1.target)
+        main_v2.run_worker(Server1)
 
     elif Server1.job_name == "ps":
         sess = tf.Session(Server1.target)

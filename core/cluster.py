@@ -205,7 +205,6 @@ class ServerBuilder:
         """
         Returns a Server object given information set.
         Job name and task index, and ps_strategy are not needed if setupServer = False
-
         :return: Server object
         """
 
@@ -220,7 +219,7 @@ class ServerBuilder:
 
     def set_job_list(self, job_list):
         """
-
+        This method sets job_list of cluster to which this Server belongs.
         :param job_list: list of jobs in cluster
         :return:
         """
@@ -229,7 +228,7 @@ class ServerBuilder:
 
     def set_ip_addresses_lists(self, ip_address_lists):
         """
-
+        This method sets ip addresss lists for cluster to which this Server belongs.
         :param ip_address_lists: list of list of ip addresses for each job in cluster
         :return:
         """
@@ -238,7 +237,7 @@ class ServerBuilder:
 
     def set_port_lists(self, port_lists):
         """
-
+        This method sets port lists for cluster to which this Server belongs.
         :param port_lists: list of list of ports for each job in cluster
         :return:
         """
@@ -246,9 +245,8 @@ class ServerBuilder:
         self.port_lists = port_lists
 
     def set_server_job_name(self, job_name):
-
         """
-
+        This method sets job name of this Server.
         :param job_name: name of job in cluster (e.g. ps, worker, etc.)
         :return:
         """
@@ -267,7 +265,7 @@ class ServerBuilder:
 
     def set_ps_strategy(self, ps_strategy):
         """
-
+        This method sets ps variable distribution strategy.
         :param ps_strategy: variable distribution strategy for ps servers (default: None = round-robin strategy)
         :return:
         """
@@ -280,6 +278,7 @@ class ServerBuilder:
         :param on: True iff done queues are enabled
         :return:self.enable_done_queues
         """
+
         self.enable_done_queues = on
 
 
