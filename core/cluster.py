@@ -26,6 +26,22 @@ class Server:
         self.job_list = job_list
         self.ip_address_lists = ip_address_lists
         self.port_lists = port_lists
+
+        self.cluster = None
+        self.resource_dict = None
+        self.server = None
+
+        self.job_name = None
+        self.task_index = None
+
+        self.ps_strategy = None
+        self.device = None
+        self.target = None
+
+        self.done_queue = None
+        self.enqueue_ops = []
+        self.use_done_queues = False
+
         logger.debug("job_list: {}".format(job_list))
         logger.debug("ip_address_list for each job: {}".format(ip_address_lists))
         logger.debug("port_list for each job: {}".format(port_lists))
@@ -63,21 +79,89 @@ class Server:
                                       task_index=self.task_index,
                                       start=True)
 
-    def join_server(self, ps_strategy=None):
+    def create_done_queue(self, i):
+        """Queue used to signal death for i'th ps shard. Intended to have
+        all workers enqueue an item onto it to signal doneness."""
+
+        with tf.device("/job:ps/task:%d" % i):
+            return tf.FIFOQueue(len(self.resource_dict['ps']),
+                                tf.int32, shared_name="done_queue" + str(i))
+
+    def set_done_queue(self):
+        """
+        Sets done queue for this parameter server with task index task_index
+        :param i: task index of this ps
+        :return:
+        """
+        self.done_queue = self.create_done_queue(self.task_index)
+
+    def create_done_queues(self):
+        """
+        Creates done queues for each ps.
+        :return: list of done queues indexed by task_index of ps
+        """
+        return [self.create_done_queue(i) for i in range(len(self.resource_dict['ps']))]
+
+    def wait_for_finish_from_done_queue(self, sess):
+        """
+        This method waits for each worker to finish before quitting the ps.
+        Run this on ps.
+        :param sess: Session of ps / worker
+        :return:
+        """
+        for i in range(len(self.resource_dict['worker'])):
+            sess.run(self.done_queue.dequeue())
+            logger.debug("ps %d received done worker %d" % (self.task_index, i))
+        logger.debug("ps %d: quitting" % self.task_index)
+
+    def prepare_signal_ops(self):
+
+        """
+        This method prepares a list of ops enqueuing worker's done signal on each done queue for different PS's.
+        Run this method under the device scope for worker.
+        :return:
+        """
+
+        for q in self.create_done_queues():
+            qop = q.enqueue(1)
+            self.enqueue_ops.append(qop)
+
+    def signal_done(self, sess):
+        """
+        This method runs enqueue ops prepared using prepare_signal_ops.
+        THe signals enqueued to the done queue of each ps will cause ps to
+        dequeue the corresponding worker's signal.
+
+        Run this under the device scope of worker.
+        :param sess: Session of worker
+        :return:
+        """
+
+        for op in self.enqueue_ops:
+            sess.run(op)
+
+    def join_server(self, ps_strategy=None, use_done_queues=False):
         """
             Joins server to cluster.
             Device and server target are created in this process if job_name="worker"
 
             :param ps_strategy: variable distribution strategy for ps servers (default: None = round-robin strategy)
+            :param use_done_queues: True iff done queues are used for this cluster
         """
 
         # Assigns ps strategy to class
         self.ps_strategy = ps_strategy
+        self.use_done_queues = use_done_queues
+
         logger.debug("PS Strategy: {}".format(self.ps_strategy))
+        logger.debug("Use done queues: {}".format(self.use_done_queues))
 
         if self.job_name == "ps":
 
-            self.server.join()
+            if self.use_done_queues:
+                self.set_done_queue()
+            else:
+                self.server.join()
 
         elif self.job_name == "worker":
 
@@ -115,6 +199,7 @@ class ServerBuilder:
         self.job_name = ""
         self.port_lists = list()
         self.task_index = 0
+        self.enable_done_queues = False
 
     def get_server(self, setup_server=True):
         """
@@ -130,7 +215,7 @@ class ServerBuilder:
         if setup_server:
             server.create_cluster()
             server.start_server(self.job_name, self.task_index)
-            server.join_server(ps_strategy=self.ps_strategy)
+            server.join_server(ps_strategy=self.ps_strategy, use_done_queues=self.enable_done_queues)
         return server
 
     def set_job_list(self, job_list):
@@ -188,6 +273,14 @@ class ServerBuilder:
         """
 
         self.ps_strategy = ps_strategy
+
+    def set_done_queues(self, on=False):
+        """
+        THis method sets option to enable or disable the use of done queues for Server.
+        :param on: True iff done queues are enabled
+        :return:self.enable_done_queues
+        """
+        self.enable_done_queues = on
 
 
 # TEST CODE
