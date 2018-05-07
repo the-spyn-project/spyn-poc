@@ -40,7 +40,8 @@ if __name__ == '__main__':
 
     ip_addresses = [[], []]
     ip_addresses[0].append('209.195.105.197')
-    ip_addresses[1].append('73.158.142.79')
+    ip_addresses[1].append('192.168.1.112')
+    #ip_addresses[1].append('73.158.142.79')
 
     ports = [[], []]
     ports[0].append('2222')

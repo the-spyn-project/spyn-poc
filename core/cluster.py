@@ -84,7 +84,9 @@ class Server:
         all workers enqueue an item onto it to signal doneness."""
 
         with tf.device("/job:ps/task:%d" % i):
-            return tf.FIFOQueue(len(self.resource_dict['ps']),
+            logger.debug('Number of workers: {}'.format(len(self.resource_dict['worker'])))
+            logger.debug('Device for done queue: /job:ps/task:%d' % i)
+            return tf.FIFOQueue(len(self.resource_dict['worker']),
                                 tf.int32, shared_name="done_queue" + str(i))
 
     def set_done_queue(self):
@@ -157,6 +159,7 @@ class Server:
         logger.debug("Use done queues: {}".format(self.use_done_queues))
 
         if self.job_name == "ps":
+            self.target = self.server.target
 
             if self.use_done_queues:
                 self.set_done_queue()
@@ -168,7 +171,7 @@ class Server:
             device_config = "/job:worker/task:{}".format(self.task_index)
             logger.debug("device_config: {}".format(device_config))
 
-            self.device , self.target = (tf.train.replica_device_setter(
+            self.device, self.target = (tf.train.replica_device_setter(
                                         worker_device=device_config,
                                         cluster=self.cluster, ps_strategy=self.ps_strategy),
                                         self.server.target)
