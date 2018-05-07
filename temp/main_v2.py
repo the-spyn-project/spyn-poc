@@ -121,8 +121,8 @@ def prepare_data(config):
 
 def run_train_epochs(target1, cfg, espcn, server):
 
-    hooks = [tf.train.StopAtStepHook(last_step=FLAGS.steps_per_epoch)]
-
+    #hooks = [tf.train.StopAtStepHook(last_step=FLAGS.steps_per_epoch)]
+    hooks = []
     # The MonitoredTrainingSession takes care of session initialization,
     # restoring from a checkpoint, saving to a checkpoint, and closing when done
     # or an error occurs.
@@ -136,16 +136,19 @@ def run_train_epochs(target1, cfg, espcn, server):
     print("tgt1: {}".format(target1))
     print("cgf: {}".format(cfg))
     print("tsk indx T/F: {}".format(FLAGS.task_index == 0))
-    checkpoint_path = os.path.join(os.getcwd(), r'\checkpoint')
-    print("Checkpoint path: {}".format(checkpoint_path))
+    #os.chdir('C:\\Users\\XL\\Desktop\\spyn-poc')
 
-    with tf.train.MonitoredTrainingSession(checkpoint_dir=checkpoint_path,
+    #print("current dir: " + os.getcwd())
+    #checkpoint_path = os.path.join(os.getcwd(), r'\checkpoint')
+    #print("Checkpoint path: {}".format(checkpoint_path))
+
+    with tf.train.MonitoredTrainingSession(checkpoint_dir=None,
                                            hooks=hooks,
                                            master=target1,
                                            config=cfg,
                                            is_chief=(FLAGS.task_index == 0),
                                            ) as sess:
-        while not sess.should_stop():
+        while not sess.should_stop() and tf.train.global_step(sess, espcn.global_step) < FLAGS.steps_per_epoch:
             espcn.train(FLAGS, sess)
 
         if server.use_done_queues:
