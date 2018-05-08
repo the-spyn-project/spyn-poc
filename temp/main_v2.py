@@ -119,10 +119,15 @@ def prepare_data(config):
         return x1, y
 
 
+def stop_fn(step_context):
+    step_context.request_stop()
+    return None
+
+
 def run_train_epochs(cfg, espcn, server):
 
     hooks = [tf.train.StopAtStepHook(last_step=(FLAGS.steps_per_epoch +
-                                     (len(server.enqueue_ops)*len(server.resource_dict['worker'])))),
+                                     (len(server.enqueue_ops)*len(server.resource_dict['worker'])) + 1)),
              tf.train.CheckpointSaverHook(checkpoint_dir=FLAGS.checkpoint_dir, save_steps=50, saver=tf.train.Saver())]
     # hooks = []
     # The MonitoredTrainingSession takes care of session initialization,
@@ -154,7 +159,8 @@ def run_train_epochs(cfg, espcn, server):
 
         if server.use_done_queues:
             server.signal_done(sess)
-        exit(1)
+
+        sess.run_step_fn(stop_fn)
         #print('Final step: {}'.format(tf.train.global_step(sess, espcn.global_step)))
 
 
