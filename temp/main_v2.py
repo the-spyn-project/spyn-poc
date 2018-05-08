@@ -23,8 +23,8 @@ from utils import (
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 
-flags.DEFINE_integer("epoch", 1200, "Number of epoch")
-flags.DEFINE_integer("steps_per_epoch", 3000, "Steps per epoch")
+flags.DEFINE_integer("epoch", 250, "Number of epoch")
+flags.DEFINE_integer("steps_per_epoch", 250, "Steps per epoch")
 flags.DEFINE_integer("image_size", 32, "The size of image input")
 flags.DEFINE_integer("c_dim", 3, "The size of channel")
 flags.DEFINE_boolean("is_train", True, "if training")
@@ -41,7 +41,7 @@ flags.DEFINE_float("learning_rate", 1e-4, "The learning rate")
 flags.DEFINE_integer("batch_size", 8, "the size of batch")
 flags.DEFINE_string("result_dir", "result", "Name of result directory")
 flags.DEFINE_string("test_img", "", "test_img")
-flags.DEFINE_boolean("load_existing_data", False,
+flags.DEFINE_boolean("load_existing_data", True,
                      "True iff existing hf data is loaded for training/testing")
 flags.DEFINE_string("job_name", "", "ps/worker")
 flags.DEFINE_integer("task_index", 0, "task index")
@@ -119,10 +119,12 @@ def prepare_data(config):
         return x1, y
 
 
-def run_train_epochs(target1, cfg, espcn, server):
+def run_train_epochs(cfg, espcn, server):
 
-    #hooks = [tf.train.StopAtStepHook(last_step=FLAGS.steps_per_epoch)]
-    hooks = []
+    hooks = [tf.train.StopAtStepHook(last_step=(FLAGS.steps_per_epoch +
+                                     (len(server.enqueue_ops)*len(server.resource_dict['worker'])))),
+             tf.train.CheckpointSaverHook(checkpoint_dir=FLAGS.checkpoint_dir, save_steps=50, saver=tf.train.Saver())]
+    # hooks = []
     # The MonitoredTrainingSession takes care of session initialization,
     # restoring from a checkpoint, saving to a checkpoint, and closing when done
     # or an error occurs.
@@ -133,7 +135,6 @@ def run_train_epochs(target1, cfg, espcn, server):
 
     print("chkpt dir: {}".format(FLAGS.checkpoint_dir))
     print("hks: {}".format(hooks))
-    print("tgt1: {}".format(target1))
     print("cgf: {}".format(cfg))
     print("tsk indx T/F: {}".format(FLAGS.task_index == 0))
     #os.chdir('C:\\Users\\XL\\Desktop\\spyn-poc')
@@ -144,15 +145,18 @@ def run_train_epochs(target1, cfg, espcn, server):
 
     with tf.train.MonitoredTrainingSession(checkpoint_dir=None,
                                            hooks=hooks,
-                                           master=target1,
+                                           master=server.target,
                                            config=cfg,
-                                           is_chief=(FLAGS.task_index == 0),
+                                           is_chief=(server.task_index == 0)
                                            ) as sess:
         while not sess.should_stop() and tf.train.global_step(sess, espcn.global_step) < FLAGS.steps_per_epoch:
             espcn.train(FLAGS, sess)
 
         if server.use_done_queues:
             server.signal_done(sess)
+        exit(1)
+        #print('Final step: {}'.format(tf.train.global_step(sess, espcn.global_step)))
+
 
 
 def run_ps(server):      # ===================================================================================== -> Checking if the flags are valid
@@ -210,4 +214,4 @@ def run_worker(server):
             device_filters=["/job:ps", "/job:worker/task:%d" % FLAGS.task_index]
         )
 
-        run_train_epochs(server.target, config, espcn, server)
+        run_train_epochs(config, espcn, server)

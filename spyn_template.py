@@ -55,9 +55,9 @@ if __name__ == '__main__':
     svrBuilder.set_ip_addresses_lists(ip_addresses)
     svrBuilder.set_job_list(jobs)
     svrBuilder.set_port_lists(ports)
-    svrBuilder.set_server_job_name('ps')
+    svrBuilder.set_server_job_name('worker')
     svrBuilder.set_task_index(0)
-    svrBuilder.set_ps_strategy(tf.contrib.training.GreedyLoadBalancingStrategy)
+    svrBuilder.set_ps_strategy(None)
     svrBuilder.set_done_queues(on=True)
     Server1 = svrBuilder.get_server()
 
@@ -67,4 +67,3 @@ if __name__ == '__main__':
     elif Server1.job_name == "ps":
         sess = tf.Session(Server1.target)
         Server1.wait_for_finish_from_done_queue(sess)
-        sess.close()
