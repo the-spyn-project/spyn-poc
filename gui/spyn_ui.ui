@@ -1,10 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <interface>
   <object class="tk.Toplevel" id="toplevel_gui">
+    <property name="background">#a0a0a0</property>
     <property name="height">1000</property>
     <property name="width">1000</property>
     <child>
       <object class="tk.Frame" id="frame_main">
+        <property name="background">#b5cfe6</property>
         <property name="height">1000</property>
         <property name="width">500</property>
         <layout>
@@ -29,6 +31,7 @@
                 <property name="text" translatable="yes">Buyer</property>
                 <child>
                   <object class="tk.Frame" id="frame_buyer">
+                    <property name="background">#b5cfe6</property>
                     <property name="height">200</property>
                     <property name="width">200</property>
                     <layout>
@@ -39,6 +42,7 @@
                     </layout>
                     <child>
                       <object class="tk.LabelFrame" id="label_frame_submit">
+                        <property name="background">#b5cfe6</property>
                         <property name="height">900</property>
                         <property name="relief">flat</property>
                         <property name="takefocus">false</property>
@@ -214,7 +218,9 @@
                     </child>
                     <child>
                       <object class="tk.LabelFrame" id="label_frame_bill">
+                        <property name="background">#b5cfe6</property>
                         <property name="height">270</property>
+                        <property name="pady">0</property>
                         <property name="text" translatable="yes">Billing</property>
                         <property name="width">500</property>
                         <layout>
@@ -264,6 +270,7 @@
                 <property name="underline">0</property>
                 <child>
                   <object class="tk.Frame" id="frame_seller">
+                    <property name="background">#b5cfe6</property>
                     <property name="height">200</property>
                     <property name="width">200</property>
                     <layout>
@@ -274,6 +281,7 @@
                     </layout>
                     <child>
                       <object class="tk.LabelFrame" id="label_frame_add_device">
+                        <property name="background">#b5cfe6</property>
                         <property name="height">300</property>
                         <property name="takefocus">false</property>
                         <property name="text" translatable="yes">Add device to Spyn</property>
@@ -377,6 +385,7 @@
                     </child>
                     <child>
                       <object class="tk.LabelFrame" id="label_frame_status_mon">
+                        <property name="background">#b5cfe6</property>
                         <property name="height">700</property>
                         <property name="text" translatable="yes">Status Monitor</property>
                         <property name="width">500</property>
@@ -399,7 +408,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="tk.Entry" id="text_box_port">
+                          <object class="tk.Entry" id="text_box_port_1">
                             <property name="insertofftime">100</property>
                             <property name="insertontime">0</property>
                             <property name="state">readonly</property>
@@ -457,7 +466,6 @@
         </layout>
         <child>
           <object class="pygubu.builder.widgets.tkscrollbarhelper" id="scrollbarhelper_text_mgmt_status">
-            <property name="container">false</property>
             <property name="scrolltype">both</property>
             <property name="usemousewheel">true</property>
             <layout>
@@ -468,6 +476,7 @@
             <child>
               <object class="tk.Text" id="text_management_status">
                 <property name="autoseparators">false</property>
+                <property name="background">#efefef</property>
                 <property name="height">32</property>
                 <property name="insertborderwidth">0</property>
                 <property name="insertunfocussed">solid</property>
@@ -488,16 +497,17 @@
           </object>
         </child>
         <child>
-          <object class="pygubu.builder.widgets.scrollbarhelper" id="scrollbarhelper_text_mgmt_status">
+          <object class="pygubu.builder.widgets.tkscrollbarhelper" id="scrollbarhelper_training_status">
             <property name="scrolltype">both</property>
-            <property name="usemousewheel">true</property>
+            <property name="usemousewheel">false</property>
             <layout>
               <property name="column">0</property>
               <property name="propagate">True</property>
-              <property name="row">7</property>
+              <property name="row">8</property>
             </layout>
             <child>
               <object class="tk.Text" id="text_training_status">
+                <property name="background">#efefef</property>
                 <property name="height">32</property>
                 <property name="width">50</property>
                 <layout>
