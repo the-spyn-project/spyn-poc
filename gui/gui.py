@@ -52,7 +52,7 @@ class spyn:
         self.gui.resizable(width=False,height=False)
         self.gui.geometry('{}x{}'.format(self.gui_w,self.gui_h))
         self.gui.title('SPYN')
-        self.gui.iconbitmap(r'C:\Users\Veda Sadhak\Desktop\GIT\spyn-poc\images\logo.ico')
+        #self.gui.iconbitmap(r'C:\Users\Veda Sadhak\Desktop\GIT\spyn-poc\images\logo.ico')
 
     def initialize_seller_frame(self):
 
