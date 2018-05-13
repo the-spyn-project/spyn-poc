@@ -9,7 +9,6 @@
 
 import os
 import sys
-from logger import *
 import tensorflow as tf
 
 
@@ -17,9 +16,15 @@ import tensorflow as tf
 # ==================================================================================================
 
 cwd = os.getcwd()
-core_path = cwd + r'\core'
+core_path = cwd + '/core'
+temp_path = cwd + '/temp'
+
+print(core_path)
+print(temp_path)
+
 sys.path.append(core_path)
-sys.path.append(r'C:\Users\OM\Desktop\DNN\VESPCN Cloud Ver')
+sys.path.append(temp_path)
+
 
 from cluster import *
 from logger import *
@@ -33,32 +38,32 @@ if __name__ == '__main__':
 
     logger.setLevel(logging.DEBUG)
 
-    jobs = []
+    ip_addresses = [[], []]
+    ip_addresses[0].append('209.195.105.197')
+    ip_addresses[1].append('192.168.1.112')
+    #ip_addresses[1].append('73.158.142.79')
+
+    ports = [[], []]
+    ports[0].append('2222')
+    ports[1].append('2222')
+
+    jobs = list()
     jobs.append('ps')
     jobs.append('worker')
 
-    tasks = []
-    tasks.append(0)
-    tasks.append(0)
+    svrBuilder = ServerBuilder()
+    svrBuilder.set_ip_addresses_lists(ip_addresses)
+    svrBuilder.set_job_list(jobs)
+    svrBuilder.set_port_lists(ports)
+    svrBuilder.set_server_job_name('worker')
+    svrBuilder.set_task_index(0)
+    svrBuilder.set_ps_strategy(None)
+    svrBuilder.set_done_queues(on=True)
+    Server1 = svrBuilder.get_server()
 
-    ip_addresses = []
-    ip_addresses.append('73.158.142.79')
-    ip_addresses.append('73.158.142.79')
+    if Server1.job_name == "worker":
+        main_v2.run_worker(Server1)
 
-    ports = []
-    ports.append('2223')
-    ports.append('2222')
-
-    cluster = Cluster(jobs, tasks, ip_addresses, ports)
-
-    cluster.create_cluster()
-
-    cluster.start_server("",-1)
-
-    cluster.join_server('worker')
-
-    with tf.device(cluster.device):
-
-        main_v2.run_worker()
-
-
+    elif Server1.job_name == "ps":
+        sess = tf.Session(Server1.target)
+        Server1.wait_for_finish_from_done_queue(sess)
