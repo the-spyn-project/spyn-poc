@@ -9,7 +9,7 @@ def on_button1_click():
     messagebox.showinfo('Message', 'You clicked Button 1')
 
 class Application:
-    def __init__(self, master):
+    def __init__(self):
 
         #1: Create a builder
         self.builder = builder = pygubu.Builder()
@@ -18,7 +18,8 @@ class Application:
         builder.add_from_file('spyn_ui.ui')
 
         #3: Create the widget using a master as parent
-        self.mainwindow = builder.get_object('toplevel_gui', master)
+        self.mainwindow = builder.get_object('toplevel_gui')
+        self.mainwindow.protocol("WM_DELETE_WINDOW", self.on_close_window)
 
         callbacks = {
             'on_add_device_button_clicked': on_button1_click
@@ -26,17 +27,16 @@ class Application:
 
         builder.connect_callbacks(callbacks)
 
-def hide(root):
-    root.withdraw()
+    def on_close_window(self, event=None):
+        print('On close window')
 
+        # Call destroy on toplevel to finish program
+        self.mainwindow.destroy()
 
-def show(root):
-    root.update()
-    root.deiconify()
-
+    def run(self):
+        self.mainwindow.mainloop()
 
 if __name__ == '__main__':
-    root = tk.Tk()
-    hide(root)
-    app = Application(root)
-    root.mainloop()
+
+    app = Application()
+    app.run()
