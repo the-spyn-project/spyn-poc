@@ -2,8 +2,11 @@
 <interface>
   <object class="tk.Toplevel" id="toplevel_gui">
     <property name="background">#a0a0a0</property>
+    <property name="cursor">arrow</property>
     <property name="height">1000</property>
-    <property name="width">1000</property>
+    <property name="resizable">both</property>
+    <property name="title" translatable="yes">Spyn</property>
+    <property name="width">1300</property>
     <child>
       <object class="tk.Frame" id="frame_main">
         <property name="background">#b5cfe6</property>
@@ -33,6 +36,8 @@
                   <object class="tk.Frame" id="frame_buyer">
                     <property name="background">#b5cfe6</property>
                     <property name="height">200</property>
+                    <property name="highlightbackground">#b5cfe6</property>
+                    <property name="highlightcolor">#b5cfe6</property>
                     <property name="width">200</property>
                     <layout>
                       <property name="column">0</property>
@@ -121,6 +126,7 @@
                         </child>
                         <child>
                           <object class="tk.Button" id="button_add_device">
+                            <property name="background">#f5f5f5</property>
                             <property name="command">on_add_device_button_clicked</property>
                             <property name="compound">top</property>
                             <property name="pady">0</property>
@@ -139,6 +145,7 @@
                         </child>
                         <child>
                           <object class="tk.Button" id="button_remove_device">
+                            <property name="background">#f5f5f5</property>
                             <property name="text" translatable="yes">Remove Device</property>
                             <layout>
                               <property name="column">0</property>
@@ -147,17 +154,19 @@
                               <property name="pady">5</property>
                               <property name="propagate">True</property>
                               <property name="row">7</property>
-                              <property name="sticky">ne</property>
+                              <property name="sticky">e</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="tk.Button" id="button_submit">
+                            <property name="background">#a2c1df</property>
                             <property name="text" translatable="yes">Submit</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="propagate">True</property>
-                              <property name="row">9</property>
+                              <property name="row">8</property>
+                              <property name="sticky">e</property>
                             </layout>
                           </object>
                         </child>
@@ -170,14 +179,18 @@
                             <layout>
                               <property name="column">0</property>
                               <property name="propagate">True</property>
-                              <property name="row">19</property>
+                              <property name="row">5</property>
                               <property name="sticky">w</property>
                             </layout>
                             <child>
                               <object class="tk.Listbox" id="listbox_available_devices">
+                                <property name="font">TkDefaultFont</property>
+                                <property name="foreground">#b5cfe6</property>
                                 <property name="height">20</property>
+                                <property name="highlightbackground">#b5cfe6</property>
+                                <property name="highlightcolor">#b5cfe6</property>
                                 <property name="state">normal</property>
-                                <property name="takefocus">true</property>
+                                <property name="takefocus">false</property>
                                 <property name="width">81</property>
                                 <layout>
                                   <property name="column">0</property>
@@ -199,11 +212,14 @@
                             <layout>
                               <property name="column">0</property>
                               <property name="propagate">True</property>
-                              <property name="row">20</property>
+                              <property name="row">6</property>
                             </layout>
                             <child>
                               <object class="tk.Listbox" id="listbox_device_added">
+                                <property name="foreground">#b5cfe6</property>
                                 <property name="height">12</property>
+                                <property name="highlightbackground">#b5cfe6</property>
+                                <property name="highlightcolor">#b5cfe6</property>
                                 <property name="width">81</property>
                                 <layout>
                                   <property name="column">0</property>
@@ -225,6 +241,7 @@
                         <property name="width">500</property>
                         <layout>
                           <property name="column">0</property>
+                          <property name="pady">10</property>
                           <property name="propagate">True</property>
                           <property name="row">1</property>
                         </layout>
@@ -272,6 +289,8 @@
                   <object class="tk.Frame" id="frame_seller">
                     <property name="background">#b5cfe6</property>
                     <property name="height">200</property>
+                    <property name="highlightbackground">#b5cfe6</property>
+                    <property name="highlightcolor">#b5cfe6</property>
                     <property name="width">200</property>
                     <layout>
                       <property name="column">0</property>
@@ -371,8 +390,14 @@
                           </object>
                         </child>
                         <child>
-                          <object class="ttk.Button" id="button_offer">
+                          <object class="tk.Button" id="button_offer">
+                            <property name="anchor">center</property>
+                            <property name="background">#a2c1df</property>
+                            <property name="compound">bottom</property>
+                            <property name="height">1</property>
+                            <property name="pady">0</property>
                             <property name="text" translatable="yes">Offer</property>
+                            <property name="width">10</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="propagate">True</property>
@@ -458,7 +483,7 @@
     <child>
       <object class="tk.Frame" id="frame_console">
         <property name="height">1000</property>
-        <property name="width">500</property>
+        <property name="width">800</property>
         <layout>
           <property name="column">1</property>
           <property name="propagate">True</property>
@@ -466,8 +491,10 @@
         </layout>
         <child>
           <object class="pygubu.builder.widgets.tkscrollbarhelper" id="scrollbarhelper_text_mgmt_status">
+            <property name="height">500</property>
             <property name="scrolltype">both</property>
             <property name="usemousewheel">true</property>
+            <property name="width">800</property>
             <layout>
               <property name="column">0</property>
               <property name="propagate">True</property>
@@ -485,7 +512,7 @@
                 <property name="pady">0</property>
                 <property name="selectborderwidth">2</property>
                 <property name="state">normal</property>
-                <property name="width">50</property>
+                <property name="width">80</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="propagate">True</property>
@@ -498,8 +525,10 @@
         </child>
         <child>
           <object class="pygubu.builder.widgets.tkscrollbarhelper" id="scrollbarhelper_training_status">
+            <property name="height">500</property>
             <property name="scrolltype">both</property>
             <property name="usemousewheel">false</property>
+            <property name="width">800</property>
             <layout>
               <property name="column">0</property>
               <property name="propagate">True</property>
@@ -509,7 +538,7 @@
               <object class="tk.Text" id="text_training_status">
                 <property name="background">#efefef</property>
                 <property name="height">32</property>
-                <property name="width">50</property>
+                <property name="width">80</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="propagate">True</property>
