@@ -160,6 +160,7 @@
                         </child>
                         <child>
                           <object class="tk.Button" id="button_submit">
+                            <property name="activebackground">#6a9bcc</property>
                             <property name="background">#a2c1df</property>
                             <property name="text" translatable="yes">Submit</property>
                             <layout>
@@ -302,11 +303,13 @@
                       <object class="tk.LabelFrame" id="label_frame_add_device">
                         <property name="background">#b5cfe6</property>
                         <property name="height">300</property>
+                        <property name="pady">0</property>
                         <property name="takefocus">false</property>
                         <property name="text" translatable="yes">Add device to Spyn</property>
                         <property name="width">500</property>
                         <layout>
                           <property name="column">0</property>
+                          <property name="pady">20</property>
                           <property name="propagate">True</property>
                           <property name="row">0</property>
                           <property name="sticky">w</property>
@@ -391,6 +394,7 @@
                         </child>
                         <child>
                           <object class="tk.Button" id="button_offer">
+                            <property name="activebackground">#6a9bcc</property>
                             <property name="anchor">center</property>
                             <property name="background">#a2c1df</property>
                             <property name="compound">bottom</property>
@@ -416,6 +420,7 @@
                         <property name="width">500</property>
                         <layout>
                           <property name="column">0</property>
+                          <property name="pady">30</property>
                           <property name="propagate">True</property>
                           <property name="row">1</property>
                           <property name="sticky">w</property>
@@ -423,7 +428,7 @@
                         <child>
                           <object class="ttk.Combobox" id="combo_box_device">
                             <property name="state">normal</property>
-                            <property name="width">75</property>
+                            <property name="width">78</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="pady">5</property>
@@ -434,8 +439,6 @@
                         </child>
                         <child>
                           <object class="tk.Entry" id="text_box_port_1">
-                            <property name="insertofftime">100</property>
-                            <property name="insertontime">0</property>
                             <property name="state">readonly</property>
                             <property name="width">80</property>
                             <layout>
