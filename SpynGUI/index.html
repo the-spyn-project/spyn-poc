@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Spyn</title>
+    <link rel="stylesheet" href="css/spyn_login_style.css"/>
+  </head>
+  <body>
+    <div class="container">
+    <div class="main">
+    <h2>Login to Spyn</h2>
+    <form id="form_id" method="post" name="myform">
+        <label>Password :</label>
+        <input type="password" name="password" id="password"/>
+        <input type="button" value="Login" id="submit" onclick="validate()"/>
+    </form>
+    </div>
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
