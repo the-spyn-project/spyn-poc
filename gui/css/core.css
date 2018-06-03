@@ -29,6 +29,7 @@
 	display: table;
 	padding-right: 20px;
 	padding-left: 20px;
+	border-bottom: 1px solid;
 	/* border: 2px solid; */ /* Used for debugging */
 }
 
@@ -48,6 +49,7 @@
 	display: table;
 	padding-right: 19px;
 	padding-left: 19px;
+	border-right: 1px solid;
 	/* border: 2px solid; */ /* Used for debugging */
 }
 
