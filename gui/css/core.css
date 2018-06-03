@@ -37,11 +37,31 @@
 	background-color: #5164F6;
 }
 
-.nav_item_b
+.nav_item_b_left
 {
+	float: left;
 	font-family: "Arial";
 	height: 61px;
-	width: 160px;
+	width: 59px;
+	text-align: center;
+	margin-top: 0px;
+	display: table;
+	padding-right: 19px;
+	padding-left: 19px;
+	/* border: 2px solid; */ /* Used for debugging */
+}
+
+.nav_item_b_left:hover
+{
+	background-color: #5164F6;
+}
+
+.nav_item_b_right
+{
+	float: right;
+	font-family: "Arial";
+	height: 61px;
+	width: 60px;
 	text-align: center;
 	margin-top: 0px;
 	display: table;
@@ -50,7 +70,7 @@
 	/* border: 2px solid; */ /* Used for debugging */
 }
 
-.nav_item_b:hover
+.nav_item_b_right:hover
 {
 	background-color: #5164F6;
 }
