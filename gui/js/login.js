@@ -1,17 +1,50 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+// Loading modules
 
 const { remote } = require('electron')
 const url = require('url')
 const path = require('path')
 
-function openMain() {
-   remote.getCurrentWindow().loadURL(url.format({
-    pathname: path.join(__dirname, '/../html/index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+const Menu = remote;
+
+// Functions
+// =================================================================================================
+
+function openMain() 
+{
+
+	remote.getCurrentWindow().loadURL(url.format({
+		pathname: path.join(__dirname, '/../index.html'),
+		protocol: 'file:',
+		slashes: true
+  	}))
+
+	const main_menu = Menu.buildFromTemplate(main_menu_template);
+
+	Menu.setApplicationMenu(main_menu)
 }
+
+const main_menu_template = 
+[
+	{
+		label: 'File',
+		submenu:
+		[
+			{label: 'Developer Mode'},
+			{label: 'Quit'}
+		]
+	},
+	{
+		label: 'View',
+		submenu:
+		[
+			{label: 'Full Screen'},
+			{label: 'Docked'}
+		],
+	}
+];
+
+
+// Listeners
+// =================================================================================================
 
 document.querySelector('#submit').addEventListener('click', openMain)

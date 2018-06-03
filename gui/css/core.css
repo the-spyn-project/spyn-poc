@@ -1,0 +1,62 @@
+
+
+.side_nav 
+{
+	height: 618px;  /* Full height */
+	width: 200px;  /* Setting width */
+	position: fixed;  /* Fixing the position */
+	z-index: 1;  /* Stay in the front */
+	overflow-x: hidden;  /* No scroll */
+	overflow-y: hidden;
+	margin-top: -25px;
+	margin-left: -8px;
+	border-right: 1px solid;
+}
+
+.list_nav
+{
+	list-style: none;
+	padding: 0px;	
+}
+
+.nav_item_a
+{
+	font-family: "Arial";
+	height: 135px;
+	width: 160px;
+	text-align: center;
+	margin-top: 0px;
+	display: table;
+	padding-right: 20px;
+	padding-left: 20px;
+	/* border: 2px solid; */ /* Used for debugging */
+}
+
+.nav_item_a:hover
+{
+	background-color: #5164F6;
+}
+
+.nav_item_b
+{
+	font-family: "Arial";
+	height: 61px;
+	width: 160px;
+	text-align: center;
+	margin-top: 0px;
+	display: table;
+	padding-right: 20px;
+	padding-left: 20px;
+	/* border: 2px solid; */ /* Used for debugging */
+}
+
+.nav_item_b:hover
+{
+	background-color: #5164F6;
+}
+
+.list_nav_text
+{
+	display: table-cell;
+	vertical-align: middle;
+}

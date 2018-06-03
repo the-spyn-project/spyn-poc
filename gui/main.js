@@ -4,10 +4,24 @@ const path = require('path');
 const url = require('url');
 const electron = require('electron');
 
-const {app, BrowserWindow} = electron;  //Loading specfic modules from Electron
+const {app, BrowserWindow, Menu} = electron;  //Loading specfic modules from Electron
 
+
+// Globals
+// =================================================================================================
 
 let main_window  // Keep a global reference of the window object
+
+const main_menu_template = 
+[
+  {
+    label: 'File',
+    submenu:
+    [
+      {label: 'Quit'}
+    ]
+  }
+];
 
 
 // Functions
@@ -15,27 +29,58 @@ let main_window  // Keep a global reference of the window object
 
 function start_main_window ()
 {
-  // Create the browser window.
-  main_window = new BrowserWindow({width: 800, height: 500})
+    // Create the browser window.
+    main_window = new BrowserWindow({width: 900, height: 600})
 
-  //Load the index.html of the app.
-  main_window.loadURL(url.format({
-    pathname: path.join(__dirname, 'login.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+    //Load the index.html of the app.
+    main_window.loadURL(url.format({
+        pathname: path.join(__dirname, 'login.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
 
-  // Emitted when the window is closed.
-  main_window.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows.
-    main_window = null
-  })
+    // Emitted when the window is closed.
+    main_window.on('closed', function () {
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows.
+        main_window = null
+    })
+
+    const main_menu = Menu.buildFromTemplate(main_menu_template);
+
+    Menu.setApplicationMenu(main_menu);
 }
 
 
 // Main
 // =================================================================================================
+
+// If MAC, add empty object to menu
+if (process.platform == 'darwin')
+{
+  main_menu_template.unshift({});
+}
+
+if (process.env.NODE_ENV !== 'production')
+{
+    main_menu_template.push(
+    {
+        label: 'Developer Tools',
+        submenu: 
+        [
+            {
+                label: 'Toggle Developer Tools',
+                click(item,focusedWindow) 
+                {
+                    focusedWindow.toggleDevTools();
+                }
+            },
+            {
+                role: 'reload'
+            }
+        ]
+    });
+}
 
 app.on('ready', start_main_window)
 
