@@ -20,7 +20,7 @@ function start_main_window ()
 
   //Load the index.html of the app.
   main_window.loadURL(url.format({
-    pathname: path.join(__dirname, 'login.html'),
+    pathname: path.join(__dirname, 'main.html'),
     protocol: 'file:',
     slashes: true
   }))
