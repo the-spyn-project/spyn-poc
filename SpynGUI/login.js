@@ -8,7 +8,7 @@ const path = require('path')
 
 function openMain() {
    remote.getCurrentWindow().loadURL(url.format({
-    pathname: path.join(__dirname, 'spyn_main.html'),
+    pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
