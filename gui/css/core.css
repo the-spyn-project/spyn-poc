@@ -1,7 +1,9 @@
-
+/* Side Navigation */
+/* ============================================================================================== */
 
 .side_nav 
 {
+	float: left;
 	height: 618px;  /* Full height */
 	width: 200px;  /* Setting width */
 	position: fixed;  /* Fixing the position */
@@ -81,4 +83,19 @@
 {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+/* Content */
+/* ============================================================================================== */
+
+.content
+{
+	float: right;
+	height: 599px;  /* Full height */
+	width: 698px;  /* Setting width */
+	margin-left: -8px;
+	overflow-x: hidden;  /* No scroll */
+	margin-top: -9px;
+	margin-right: -8px;
+	/* border: 1px solid; */ /* Used for debugging */
 }
