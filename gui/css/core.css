@@ -43,11 +43,11 @@
 	float: left;
 	font-family: "Arial";
 	height: 61px;
-	width: 59px;
+	width: 60px;
 	text-align: center;
 	margin-top: 0px;
 	display: table;
-	padding-right: 19px;
+	padding-right: 20px;
 	padding-left: 19px;
 	border-right: 1px solid;
 	/* border: 2px solid; */ /* Used for debugging */
