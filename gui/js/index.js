@@ -1,4 +1,21 @@
+
+// Importing modules
+// =================================================================================================
+
+const net = require('net');
+const Web3 = require('web3');
 window.$ = window.jQuery = require('jquery');
+
+
+// Setting Provider
+// =================================================================================================
+
+var web3 = new Web3(new Web3.providers.IpcProvider(
+					  '/home/veda-sadhak/Desktop/Ethereum/Blockchain/geth.ipc', net)); 
+
+
+// Main
+// =================================================================================================
 
 $(document).ready(function(){
     
@@ -53,6 +70,18 @@ $(document).ready(function(){
         $("#view_acc_page").hide();
         $("#logout_page").hide();
     	$("#login_page").show();
+
+    	web3.eth.getAccounts(function(err, accounts) 
+		{ 
+			for (var i = 0; i < accounts.length; i++)
+			{
+				$("#login_page").append("<div class='accounts_list_item'>"+
+											"<div class='accounts_list_text'>"+
+										 		accounts[i]+
+										 	"</div>"+
+										"</div>");
+			}
+		});
     });
 
     $("#logout_btn").click(function(){

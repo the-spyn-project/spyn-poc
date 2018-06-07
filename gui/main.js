@@ -1,8 +1,9 @@
 
 //Loading the required modules
+const electron = require('electron');
 const path = require('path');
 const url = require('url');
-const electron = require('electron');
+const exec = require('child_process').exec;
 
 const {app, BrowserWindow, Menu} = electron;  //Loading specfic modules from Electron
 
@@ -29,6 +30,7 @@ const main_menu_template =
 
 function start_main_window ()
 {
+
     // Create the browser window.
     main_window = new BrowserWindow({width: 900, height: 600})
 
@@ -49,6 +51,7 @@ function start_main_window ()
     const main_menu = Menu.buildFromTemplate(main_menu_template);
 
     Menu.setApplicationMenu(main_menu);
+
 }
 
 
