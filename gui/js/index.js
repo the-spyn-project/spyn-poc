@@ -12,7 +12,7 @@ window.$ = window.jQuery = require('jquery');
 
 var web3 = new Web3(new Web3.providers.IpcProvider(
 					  '/home/veda-sadhak/Desktop/Ethereum/Blockchain/geth.ipc', net)); 
-
+var exec = require('child_process').exec;
 
 // Main
 // =================================================================================================
@@ -94,3 +94,17 @@ $(document).ready(function(){
     });
 
 });
+
+function displayInfo(){
+ 
+  exec('docker images', function (error, stdout, stderr) {
+  console.log('stdout: ' + stdout);
+  console.log('stderr: ' + stderr);
+  document.write(stdout);
+  if (error !== null) {
+    console.log('exec error: ' + error);
+  }
+  });
+
+}
+
