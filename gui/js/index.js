@@ -34,6 +34,7 @@ $(document).ready(function(){
         $("#login_page").hide();
         $("#logout_page").hide();
     	$("#view_network_page").show();
+        displayInfo();
     });
 
     $("#supply_resources_btn").click(function(){
@@ -96,15 +97,45 @@ $(document).ready(function(){
 });
 
 function displayInfo(){
- 
-  exec('docker images', function (error, stdout, stderr) {
+  
+  exec('docker container exec ff0efc08bf8e ls', {windowsHide:true}, function (error, stdout, stderr) {
   console.log('stdout: ' + stdout);
   console.log('stderr: ' + stderr);
   document.write(stdout);
   if (error !== null) {
-    console.log('exec error: ' + error);
+    console.log('docker error: ' + error);
   }
   });
-
+  
 }
 
+function createNvidiaContainer(container_addr){
+    exec('nvidia-docker create -ti ' + container_addr + ' /bin/bash', {windowsHide:true}, function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('docker error: ' + error);
+    }
+    });
+}
+
+function removeContainer(container_id){
+    exec('nvidia-docker rm -f ' + container_id, {windowsHide:true}, function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('docker error: ' + error);
+    }
+    });
+}
+
+function startContainer(container_id){
+    exec('nvidia-docker start ' + container_id, {windowsHide:true}, function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('docker error: ' + error);
+    }
+    });
+
+}
