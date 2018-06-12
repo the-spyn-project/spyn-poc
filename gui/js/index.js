@@ -13,6 +13,7 @@ window.$ = window.jQuery = require('jquery');
 var web3 = new Web3(new Web3.providers.IpcProvider(
 					  '/home/veda-sadhak/Desktop/Ethereum/Blockchain/geth.ipc', net)); 
 var exec = require('child_process').exec;
+var cmd = require('./dockerCmd');
 
 // Main
 // =================================================================================================
@@ -34,7 +35,7 @@ $(document).ready(function(){
         $("#login_page").hide();
         $("#logout_page").hide();
     	$("#view_network_page").show();
-        displayInfo();
+        cmd.execute('docker container exec ff0efc08bf8e ls', function (error, stdout, stderr) {document.write(stdout);});
     });
 
     $("#supply_resources_btn").click(function(){
