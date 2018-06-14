@@ -14,6 +14,7 @@ var web3 = new Web3(new Web3.providers.IpcProvider(
 					  '/home/veda-sadhak/Desktop/Ethereum/Blockchain/geth.ipc', net)); 
 var exec = require('child_process').exec;
 var cmd = require('./dockerCmd');
+var docker = require('./dockerCmdLib');
 
 // Main
 // =================================================================================================
@@ -35,7 +36,7 @@ $(document).ready(function(){
         $("#login_page").hide();
         $("#logout_page").hide();
     	$("#view_network_page").show();
-        cmd.execute('docker container exec ff0efc08bf8e ls', function (error, stdout, stderr) {document.write(stdout);});
+        docker.container_exec('', 'ba8661f0d89f', 'ls', function(error, stdout, stderr){document.write(stdout);});
     });
 
     $("#supply_resources_btn").click(function(){
@@ -97,46 +98,4 @@ $(document).ready(function(){
 
 });
 
-function displayInfo(){
-  
-  exec('docker container exec ff0efc08bf8e ls', {windowsHide:true}, function (error, stdout, stderr) {
-  console.log('stdout: ' + stdout);
-  console.log('stderr: ' + stderr);
-  document.write(stdout);
-  if (error !== null) {
-    console.log('docker error: ' + error);
-  }
-  });
-  
-}
 
-function createNvidiaContainer(container_addr){
-    exec('nvidia-docker create -ti ' + container_addr + ' /bin/bash', {windowsHide:true}, function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-      console.log('docker error: ' + error);
-    }
-    });
-}
-
-function removeContainer(container_id){
-    exec('nvidia-docker rm -f ' + container_id, {windowsHide:true}, function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-      console.log('docker error: ' + error);
-    }
-    });
-}
-
-function startContainer(container_id){
-    exec('nvidia-docker start ' + container_id, {windowsHide:true}, function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-      console.log('docker error: ' + error);
-    }
-    });
-
-}
