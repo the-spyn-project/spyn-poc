@@ -1,4 +1,5 @@
 var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
 
 /**
 Given:
@@ -31,3 +32,18 @@ exports.runCommand = function (cmd) {
     }
     });
 }; 
+
+/**
+Given: 
+     cmd - command to be executed
+
+Returns:
+     res - stdout from command execution
+This method executes command cmd and returns stdout. 
+All other codes are blocked from execution until child
+process for the command exits.
+**/
+exports.runCommandSyn = function (cmd) {
+    res = execSync(cmd, {windowsHide:true});
+    return res;
+}

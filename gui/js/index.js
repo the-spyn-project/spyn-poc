@@ -36,7 +36,9 @@ $(document).ready(function(){
         $("#login_page").hide();
         $("#logout_page").hide();
     	$("#view_network_page").show();
-        docker.container_exec('', 'ba8661f0d89f', 'ls', function(error, stdout, stderr){document.write(stdout);});
+
+        // synchronous
+        document.write(cmd.runCommandSyn('docker info'));
     });
 
     $("#supply_resources_btn").click(function(){
