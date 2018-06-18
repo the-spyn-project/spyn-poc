@@ -38,7 +38,7 @@ $(document).ready(function(){
     	$("#view_network_page").show();
 
         // synchronous
-        document.write(cmd.runCommandSyn('docker info'));
+        document.write(docker.ps('-a'));
     });
 
     $("#supply_resources_btn").click(function(){

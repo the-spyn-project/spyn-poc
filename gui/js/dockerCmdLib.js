@@ -58,3 +58,44 @@ exports.container_exec = function (params, container, command, callback) {
 docker.execute('docker container exec ' + params + ' ' + container + ' ' + command, callback);
 }
 
+/**
+Given: params parameters of command
+       callback: specified iff sync = false
+       sync: whether run in sync mode (result can be returned)
+
+This method runs docker info given parameters. command is
+run in sync mode iff sync. callback function needs to be
+specified if command if !sync. Result is returned iff sync.
+**/
+exports.info = function (params, callback=null, sync=true) {
+   if (sync) {
+      return(docker.runCommandSyn('docker info ' + params));
+   }
+   else
+   {
+      docker.execute('docker info ' + params, callback);
+   }
+
+}
+
+/**
+Given: params parameters of command
+       callback: specified iff sync = false
+       sync: whether run in sync mode (result can be returned)
+
+This method runs docker ps given parameters. command is
+run in sync mode iff sync. callback function needs to be
+specified if command if !sync. Result is returned iff sync.
+**/
+exports.ps = function (params, callback=null, sync=true) {
+   if (sync) {
+      return(docker.runCommandSyn('docker ps ' + params));
+   }
+   else
+   {
+      docker.execute('docker ps ' + params, callback);
+   }
+
+}
+
+
