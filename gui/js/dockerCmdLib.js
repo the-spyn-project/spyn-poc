@@ -59,6 +59,18 @@ docker.execute('docker container exec ' + params + ' ' + container + ' ' + comma
 }
 
 /**
+Given: params: parameters of command
+       container: id of container
+       command: command to be executed within container
+       callback: function containing error, stdout, stderr as callback parameters
+
+This method performs nvidia-docker container exec.
+**/
+exports.nvidia_docker_container_exec = function (params, container, command, callback) {
+docker.execute('nvidia-docker container exec ' + params + ' ' + container + ' ' + command, callback);
+}
+
+/**
 Given: params parameters of command
        callback: specified iff sync = false
        sync: whether run in sync mode (result can be returned)
@@ -96,6 +108,27 @@ exports.ps = function (params, callback=null, sync=true) {
       docker.execute('docker ps ' + params, callback);
    }
 
+}
+
+/**
+Given: params parameters of command
+       src_dest: CONTAINER:SRC_PATH DEST_PATH|- or
+                 SRC_PATH|- CONTAINER:DEST_PATH
+       callback: specified iff sync = false
+       sync: whether run in sync mode (result can be returned)
+
+This method runs docker cp given parameters. command is
+run in sync mode iff sync. callback function needs to be
+specified if command if !sync. Result is returned iff sync.
+**/
+exports.cp = function (params, src_dest, callback=null, sync=true) {
+   if (sync) {
+      return(docker.runCommandSyn('docker cp ' + params + ' ' + src_dest));
+   }
+   else
+   {
+      docker.execute('docker cp ' + params + ' ' + src_dest, callback);
+   }
 }
 
 

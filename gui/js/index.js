@@ -38,7 +38,7 @@ $(document).ready(function(){
     	$("#view_network_page").show();
 
         // synchronous
-        document.write(docker.ps('-a'));
+        document.write(docker.cp('', 'login.js fa903b5ba185:login.js'));
     });
 
     $("#supply_resources_btn").click(function(){
